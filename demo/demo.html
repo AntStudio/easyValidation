@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript" src="../src/jquery-1.7.1.js"> </script>
+    <link rel="stylesheet" href="../src/css/tip-darkgray.css" type="text/css">
+  <script type="text/javascript" src="../src/jquery.formValidation-1.0.js"> </script>
+  <script>
+$(document).ready(function(){
+    //$("#number").validate({type:'mustNumber',msg:'填写数字'});
+	// $("#number").validate({});
+	//$("#email").validate({type:'email',msg:'邮箱'});
+	//alert($("#number").attr("validate"));
+
+	$("form").validate({errorMsg:{'required':'这个可以填,真的可以填...<br/>'}});
+//var aa = ['required{msg:"这个可以填,真的可以填..."}','number','xxx'];
+//alert(aa[0]);
+ var opts = [4,1,9];
+var msg = "长度在${1}和${2}之间";
+ var params = new Array();
+ var $start = msg.indexOf("${");
+ while($start!=-1){
+ var $end = msg.indexOf('}',$start+2);
+ params.push(msg.substring($start+2,$end));
+$start =  msg.indexOf("${",$end+1);
+ }
+$.each(params,function(index,value){
+msg = msg.replace("${"+value+"}",opts[value]);
+});
+ 
+ 
+// alert(msg);
+});
+//
+function test(aaa){
+alert("回调函数"+aaa);
+}
+var msg = "requied,gt(3),size(4,9),lt(3),eq(#password,email)";
+var types = new Array();
+var start = 0;
+var $start = msg.indexOf("(");
+
+while(start!=-1&&start!=msg.length){
+if(start==0){
+start=-1;
+}
+var end = msg.indexOf(",",start+1);
+var $end = msg.indexOf(')',$start+1);
+if(end==-1){
+  types.push(msg.substring(start+1));
+  break;
+}
+if(end>$start){//逗号进入括号了
+//alert(msg.substring(start+1,$end+1));
+types.push(msg.substring(start+1,$end+1));
+$start = $end;
+end = (end>=$end)?end:($end+1);
+}
+else{
+types.push(msg.substring(start+1,end));
+}
+start = end;
+
+}
+ 
+ $.each(types,function(index,value){
+ 
+ alert(value);
+ });
+ 
+  </script>
+ </head>
+
+ <body>
+  <form action="">
+  <br/><br/><br/><br/><br/><br/><br/>
+数字<input type='text' id="number" validate="validate[required,number,callback(test)]" class="ff"/>
+邮箱<input type='text' id="email" validate="validate[email]" class="ff"/>
+密码：<input type="text" validate="validate[required]" id="password"/>
+重复：<input type="text" validate="validate[required,eq(#password)]"/>
+<br/>
+<div>日期比较</div>
+日期:<input type="text" validate="validate[required]" id="date"/>
+日期2<input type="text" validate="validate[required,gt(#date)]"/>
+
+<div>输入长度限制</div>
+长度至少为4:<input type="text" validate="validate[minsize(4)]" id="date"/>
+长度在4和9之间<input type="text" validate="validate[minsize(4),maxsize(9)]"/>
+<input type='submit' value="提交"/>
+  <form>
+ </body>
+</html>
