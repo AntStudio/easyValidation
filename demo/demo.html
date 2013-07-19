@@ -8,10 +8,13 @@
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
   <script type="text/javascript" src="../src/jquery.formValidation-1.0.js"> </script>
   <script>
-	$(document).ready(function(){
-	 
+	$(document).ready(function(){ 
 		$("form").validate({errorMsg:{'required':'这个可以填,真的可以填...<br/>'}});
 	});
+
+	function callback(){
+		$(".message").show(1000);
+	}
   </script>
 
   <style>
@@ -51,6 +54,11 @@
 		display: inline-block;
 		text-align: right;
 	}
+
+	.btns{
+		padding-top:20px;
+		text-align:center;
+	}
   </style>
  </head>
  <body>
@@ -58,6 +66,11 @@
   <h3 class="title">
 	<img src="logo.png">
   </h3>
+  <fieldset>
+    <legend>Required Validation</legend>
+    <span>必填:</span>
+	<input type='text' id="number" validate="validate[required]" placeholder="必填"/>
+  </fieldset>
   <fieldset>
     <legend>Number Validation</legend>
     <span>Number(Required):</span>
@@ -78,18 +91,49 @@
   <fieldset>
     <legend>Compare</legend>
     <span>Field one:</span>
-	<input type="text" validate="validate[required]" placeholder="Date"/>
+	<input type="text" validate="validate[required]" placeholder="compare"/>
 	<span>Field two(should gt one):</span>
-	<input type='text' validate="validate[required,gt(#date)]" placeholder="Date" />
+	<input type='text' validate="validate[required,gt(#date)]" placeholder="compare" />
   </fieldset>
-   <fieldset>
+  <fieldset>
     <legend>Size limit</legend>
     <span>more than 4:</span>
 	<input type="text" validate="validate[minsize(4)]" placeholder="more than 4"/>
 	<span>between 4 and 9:</span>
 	<input type='text' validate="validate[minsize(4),maxsize(9)]" placeholder="between 4 and 9" />
   </fieldset>
-  <input type='submit' value="提交"/>
+  <fieldset>
+    <legend>Date</legend>
+    <span>Date Validation:</span>
+	<input type="text" validate="validate[date]" placeholder="YYYY-MM-DD"/>
+  </fieldset>
+  <fieldset>
+    <legend>Precision</legend>
+    <span>Precision:</span>
+	<input type="text" validate="validate[precision(2)]" placeholder="两位小数"/>
+  </fieldset>
+  <fieldset>
+    <legend>Checkbox</legend>
+    <span>至少选择两项</span>
+	<input type="checkbox" name="test" validate="validate[minselect(2)]"/>
+	<input type="checkbox" name="test" validate="validate[minselect(2)]"/>
+	<input type="checkbox" name="test" validate="validate[minselect(2)]"/>
+
+	 <span>只能选择两项</span>
+	<input type="checkbox" name="onlyTwo" validate="validate[minselect(2),maxselect(2)]"/>
+	<input type="checkbox" name="onlyTwo" validate="validate[minselect(2),maxselect(2)]"/>
+	<input type="checkbox" name="onlyTwo" validate="validate[minselect(2),maxselect(2)]"/>
+  </fieldset>
+  <fieldset>
+    <legend>CallBack</legend>
+    <span>回调函数:</span>
+	<input type="text" validate="validate[callback(callback)]" placeholder="回调"/>
+	<b class="alert alert-info message hide">回调函数执行...</b>
+  </fieldset>
+  <div class="btns">
+	<input type='submit' class="btn btn-primary" value="Submit"/>
+	<input type='button' class="btn btn-primary" value="Cancel"/>
+  </div>
   <form>
  </body>
 </html>
