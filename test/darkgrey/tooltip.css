@@ -1,3 +1,4 @@
+@import url("common.css");
 .easyValidation.darkgrey .tooltip {
   z-index: 1030;
   display: block;
@@ -45,26 +46,26 @@
   border-left: none;
   border-top: none;
   box-shadow: 0px 0px 2px 1px rgba(64, 64, 64, 0.65);
-  filter: progid:dximagetransform.microsoft.basicimage(rotation=3);
+ /* filter: progid:dximagetransform.microsoft.basicimage(rotation=3);*/
   -webkit-transform-origin: 50% 50% 0;
   -moz-transform-origin: 50% 50% 0;
   -o-transform-origin: 50% 50% 0;
   -ms-transform-origin: 50% 50% 0;
   transform-origin: 50% 50% 0;
-  filter: progid:dximagetransform.microsoft.matrix(M11=0.7071, M12=-0.7071, M21=0.7071, M22=0.7071, SizingMethod='auto expand');
+  /*filter: progid:dximagetransform.microsoft.matrix(M11=0.7071, M12=-0.7071, M21=0.7071, M22=0.7071, SizingMethod='auto expand');*/
   z-index: -1;
 }
 .easyValidation.darkgrey .tooltip.top .tooltip-arrow {
   left: 50%;
-  bottom: -5px;
-  margin: 0 -6px;
+  bottom: -7px;
+ /* margin: 0 -6px;*/
   -o-tranform: rotate(45deg);
   /*opera*/
   -webkit-transform: rotate(45deg);
   /*chrome safria*/
   -moz-transform: rotate(45deg);
   /*firefox*/
-  filter: progid:dximagetransform.microsoft.matrix(M11=0.7071, M12=-0.7071, M21=0.7071, M22=0.7071, SizingMethod='auto expand');
+  filter: progid:dximagetransform.microsoft.matrix(Dx=6,Dy=-5.5,M11=0.7071, M12=-0.7071, M21=0.7071, M22=0.7071);
 }
 .easyValidation.darkgrey .tooltip.bottom .tooltip-arrow {
   left: 50%;
@@ -76,11 +77,11 @@
   /*chrome safria*/
   -moz-transform: rotate(225deg);
   /*firefox*/
-  filter: progid:dximagetransform.microsoft.matrix(M11=0.7071, M12=-0.7071, M21=0.7071, M22=0.7071, SizingMethod='auto expand');
+  filter: progid:dximagetransform.microsoft.matrix(Dx=6,Dy=17.5,M11=-0.7071, M12=0.7071, M21=-0.7071, M22=-0.7071);
 }
 .easyValidation.darkgrey .tooltip.left .tooltip-arrow {
   top: 50%;
-  right: -5px;
+  right: -7px;
   left: auto;
   margin-top: -7px;
   -o-tranform: rotate(315deg);
@@ -89,7 +90,7 @@
   /*chrome safria*/
   -moz-transform: rotate(315deg);
   /*firefox*/
-  filter: progid:dximagetransform.microsoft.matrix(M11=0.7071, M12=-0.7071, M21=0.7071, M22=0.7071, SizingMethod='auto expand');
+  filter: progid:dximagetransform.microsoft.matrix(Dx=-5.5,Dy=6,M11=0.7071, M12=0.7071, M21=-0.7071, M22=0.7071);
 }
 .easyValidation.darkgrey .tooltip.right .tooltip-arrow {
   top: 50%;
@@ -101,6 +102,6 @@
   /*chrome safria*/
   -moz-transform: rotate(135deg);
   /*firefox*/
-  filter: progid:dximagetransform.microsoft.matrix(M11=0.7071, M12=-0.7071, M21=0.7071, M22=0.7071, SizingMethod='auto expand');
+  filter: progid:dximagetransform.microsoft.matrix(Dx=17.5,Dy=6,M11=-0.7071, M12=-0.7071, M21=0.7071, M22=-0.7071);
 }
 
