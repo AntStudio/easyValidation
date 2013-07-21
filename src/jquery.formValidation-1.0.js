@@ -397,33 +397,8 @@
 		 * @returns {Array}
 		 */
 		getTypes : function(typeString) {
-
-			var types = new Array();
-			var start = 0;
-			var $start = typeString.indexOf("(");
-
-			while (start != -1 && start != typeString.length) {
-				if (start == 0) {
-					start = -1;
-				}
-				var end = typeString.indexOf(",", start + 1);
-				var $end = typeString.indexOf(')', $start + 1);
-				if (end == -1) {
-					types.push(typeString.substring(start + 1));
-					break;
-				}
-				if (end > $start && $start != -1) {// 逗号进入括号了
-					types.push(typeString.substring(start + 1, $end + 1));
-					$start = $end;
-					end = (end >= $end) ? end : ($end + 1);
-				} else {
-					types.push(typeString.substring(start + 1, end));
-				}
-				start = end;
-
-			}
-
-			return types;
+			var regexString = /[\w\d]+(\([\w\d_,]*\))?/g;
+			return typeString.match(regexString);
 		},
 		/**
 		 * 控制提示信息显示或隐藏

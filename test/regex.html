@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title> New Document </title>
+  <meta name="Generator" content="EditPlus">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+ </head>
+
+ <body>
+  <script>
+	function getType(typeString){
+				var types = new Array();
+			var start = 0;
+			var $start = typeString.indexOf("(");
+
+			while (start != -1 && start != typeString.length) {
+				if (start == 0) {
+					start = -1;
+				}
+				var end = typeString.indexOf(",", start + 1);
+				var $end = typeString.indexOf(')', $start + 1);
+				if (end == -1) {
+					types.push(typeString.substring(start + 1));
+					break;
+				}
+				if (end > $start && $start != -1) {// ¶ººÅ½øÈëÀ¨ºÅÁË
+					types.push(typeString.substring(start + 1, $end + 1));
+					$start = $end;
+					end = (end >= $end) ? end : ($end + 1);
+				} else {
+					types.push(typeString.substring(start + 1, end));
+				}
+				start = end;
+
+			}
+			return types;
+	}
+
+	function getTypeInRegexWay(typeString){
+		var regexString = /[\w\d]+(\([\w\d_,]*\))?/g;
+		return typeString.match(regexString);
+	}
+
+	console.log( getType('minsize(45),maxsize(9)'));
+	console.log( getTypeInRegexWay('minsize(45),maxsize(9)'));
+	
+  </script>
+ </body>
+</html>
