@@ -455,6 +455,7 @@
 														.height()) + "px");
 						break;
 					case 'right':
+						console.log($("#msg_index_" + opts.index));
 						$("#msg_index_" + opts.index)
 								.attr(
 										"style",
@@ -494,7 +495,7 @@
 					$("#msg_index_" + opts.index).animate(
 							{
 								left : ($(opts.field).offset().left - $(
-										"#msg_index_" + opts.index).width())
+										"#msg_index_" + opts.index).width()+20)
 										+ "px",
 								opacity : '1'
 							});
@@ -504,7 +505,7 @@
 					$("#msg_index_" + opts.index).animate(
 							{
 								top : ($(opts.field).offset().top - $(
-										"#msg_index_" + opts.index).height())
+										"#msg_index_" + opts.index).height()+20)
 										+ "px",
 								opacity : '1'
 							});
@@ -513,7 +514,7 @@
 					$("#msg_index_" + opts.index).animate(
 							{
 								left : ($(opts.field).offset().left + $(
-										opts.field).width())
+										opts.field).width()+20)
 										+ "px",
 								opacity : '1'
 							});
@@ -522,7 +523,7 @@
 					$("#msg_index_" + opts.index).animate(
 							{
 								top : ($(opts.field).offset().top + $(
-										opts.field).height())
+										opts.field).height()+20)
 										+ "px",
 								opacity : '1'
 							});
@@ -550,92 +551,26 @@
 		 * @returns {String}
 		 */
 		getMsgDiv : function(opts) {
-			var msgDiv = "";
-			switch (opts.align) {
-			case 'top':
-				msgDiv = ' <div  class="formvalidation_msg_tip tip-darkgray"  id="msg_index_'
-						+ opts.index
-						+ '" style="position:absolute;filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity: 0; opacity: 0;">'
-						+ '<table border="0" cellpadding="0" cellspacing="0" >'
-						+ '<tr>'
-						+ '<td style="background-image: url(css/tip-darkgray.png); height:10px;"></td>'
-						+ '<td style="background-position:100% 0;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td>'
-						+ '</tr>'
-						+ '<tr >'
-						+ '<td class="tip-inner" style="padding-left:12px;">'
-						+ opts.msg
-						+ '</td>'
-						+ '<td style="background-position:100% 10%;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td></tr>'
-						+ '<tr>'
-						+ '<td style="background-position:0 100%;background-image: url(css/tip-darkgray.png); height:10px;"></td>'
-						+ ' <td style="background-position:100% 100%;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td>'
-						+ ' </tr>'
-						+ '</table>'
-						+ '<div class=" tip-arrow-bottom"></div>' + '</div>';
-				break;
-			case 'left':
-				msgDiv = ' <div  class="formvalidation_msg_tip tip-darkgray"  id="msg_index_'
-						+ opts.index
-						+ '" style="position:absolute;filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity: 0; opacity: 0;">'
-						+ '<table border="0" cellpadding="0" cellspacing="0" >'
-						+ '<tr>'
-						+ '<td style="background-image: url(css/tip-darkgray.png); height:10px;"></td>'
-						+ '<td style="background-position:100% 0;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td>'
-						+ '<td style="width:11px;"></td></tr>'
-						+ '<tr >'
-						+ '<td class="tip-inner" style="padding-left:12px;">'
-						+ opts.msg
-						+ '</td>'
-						+ '<td style="background-position:100% 10%;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td>'
-						+ '<td><div class="tip-arrow-right" style="width:11px;height:21px"></div></td></tr><tr>'
-						+ '<td style="background-position:0 100%;background-image: url(css/tip-darkgray.png); height:10px;"></td>'
-						+ ' <td style="background-position:100% 100%;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td>'
-						+ ' <td></td></tr>' + '</table>' + '</div>';
-			case 'right':
-				msgDiv = ' <div  class="formvalidation_msg_tip tip-darkgray"  id="msg_index_'
-						+ opts.index
-						+ '" style="position:absolute;filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity: 0; opacity: 0;">'
-						+ '<table border="0" cellpadding="0" cellspacing="0" >'
-						+ '<tr><td style="width:11px;"></td>'
-						+ '<td class="td1111"></td>'
-						+ '<td class="td2222"></td>'
-						+ '</tr>'
-						+ '<tr ><td><div class="tip-arrow-left"></div></td>'
-						+ '<td class="tip-inner" style="padding-left:12px;">'
-						+ opts.msg
-						+ '</td>'
-						+ '<td class="td3333"></td>'
-						+ '</tr><tr><td></td>'
-						+ '<td class="td4444"></td>'
-						+ ' <td class="td5555"></td>'
-						+ ' </tr></table></div>';
-				break;
-			case 'bottom':
-				msgDiv = ' <div  class="formvalidation_msg_tip tip-darkgray"  id="msg_index_'
-						+ opts.index
-						+ '" style="position:absolute;filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity: 0; opacity: 0;">'
-						+ '<div class=" tip-arrow-top"></div><table border="0" cellpadding="0" cellspacing="0" >'
-						+ '<tr>'
-						+ '<td style="background-image: url(css/tip-darkgray.png); height:10px;"></td>'
-						+ '<td style="background-position:100% 0;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td>'
-						+ '</tr>'
-						+ '<tr >'
-						+ '<td class="tip-inner" style="padding-left:12px;">'
-						+ opts.msg
-						+ '</td>'
-						+ '<td style="background-position:100% 10%;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td></tr>'
-						+ '<tr>'
-						+ '<td style="background-position:0 100%;background-image: url(css/tip-darkgray.png); height:10px;"></td>'
-						+ ' <td style="background-position:100% 100%;background-image: url(css/tip-darkgray.png); height:10px;width:10px;"></td>'
-						+ ' </tr>' + '</table>' + '</div>';
-				break;
-
-			default:
-				msgDiv = '没有指定错误信息显示方向';
-
+			var theme = "darkgrey";
+			function getByAlign(align){
+				return  "<div class=\" easyValidation transparent "
+						+theme
+						+"\" id=\"msg_index_"
+						+ opts.index+"\" >"
+						+"<div class=\"tooltip "
+						+align
+						+"\">"
+					    +"<div class=\"tooltip-inner\">"
+						+"<span>"
+						+opts.msg
+						+"</span>"
+				        +"</div>"
+					    +"<div class=\"tooltip-arrow\"></div>"
+					    +"</div></div>";
 			}
-			return msgDiv;
+			return getByAlign(opts.align);
 		}
+		
 
 	};
 
