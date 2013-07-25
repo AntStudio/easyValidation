@@ -3,7 +3,7 @@
  * 
  * @date 2012-8-14
  * @version: 1.0
- * @author swby
+ * @author gavincook
  * @requires jQuery v1.3 or later
  */
 
@@ -408,132 +408,64 @@
 		 */
 		showOrHideMsg : function(opts) {
 			var result = false;
+
+			/**
+			**设置msg初始位置
+			**/
+			function setMsgPostion(align){
+				var $msgDiv = $("#msg_index_"+ opts.index);
+				var top,left;
+				switch(align){
+					case "left" : top=$(opts.field).offset().top-$msgDiv.height() / 2 + $(opts.field).height() / 2;
+								  left=($(opts.field).offset().left - 50 -$(opts.field).width());
+								  break;
+					case "right": top=$(opts.field).offset().top-$msgDiv.height() / 2 + $(opts.field).height() / 2;
+								  left=($(opts.field).offset().left + 50 +$(opts.field).width());
+								  break;
+					case "top"  : top=$(opts.field).offset().top- $(opts.field).height()-50;
+								  left=($(opts.field).offset().left+$(opts.field).width()/2);
+								  break;
+					case "down" : top=$(opts.field).offset().top+ $(opts.field).height()+50;
+								  left=($(opts.field).offset().left+$(opts.field).width()/2);
+								  break;
+				}
+				$msgDiv.css("top",top).css("left",left);
+			}
+
+			/**
+			**动画显示提示信息
+			**/
+			function show(align){
+				var top,left;
+				switch(align){
+					case "left" : left=($(opts.field).offset().left + 20 -$(opts.field).width());
+								  break;
+					case "right": left=($(opts.field).offset().left + 20 +$(opts.field).width());
+								  break;
+					case "top"  : top=$(opts.field).offset().top- $(opts.field).height()-20;
+								  break;
+					case "down" : top=$(opts.field).offset().top+ $(opts.field).height()+20;
+								  break;
+				}
+				$("#msg_index_" + opts.index).animate({
+					left : left	+ "px",
+					opacity : '1',
+					top:top+"px"
+				});
+			}
+
 			if (opts.msg.replace(/<br\/>/g, "") != '') {
 				if ($("#msg_index_" + opts.index).length == 0) {// 未创建提示信息
-					opts.msg = opts.msg.substring(0, opts.msg.length - 5);
-
+					opts.msg = opts.msg.substring(0, opts.msg.length - 5);//取消</br>
 					$('body').append(method.getMsgDiv(opts));
-					$(".formvalidation_msg_tip").click(
-							function() {
-								method.hide(this);
-								if (typeof (opts.index) == 'number')
-									$("form :input:eq(" + opts.index + ")")
-											.focus();
-								else {
-									$("form :input[name='" + opts.index + "']")
-											.focus();
-								}
-							});
-					switch (opts.align) {
-					case 'left':
-						$("#msg_index_" + opts.index)
-								.attr(
-										"style",
-										"position:absolute;filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity: 0; opacity: 0;top:"
-												+ ($(opts.field).offset().top
-														- $(
-																"#msg_index_"
-																		+ opts.index)
-																.height() / 2 + $(
-														opts.field).height() / 2)
-												+ "px;left:"
-												+ ($(opts.field).offset().left - 50 - $(
-														"#msg_index_"
-																+ opts.index)
-														.width()) + "px");
-						break;
-					case 'top':
-						$("#msg_index_" + opts.index)
-								.attr(
-										"style",
-										"position:absolute;filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity: 0; opacity: 0;left:"
-												+ $(opts.field).offset().left
-												+ "px;top:"
-												+ ($(opts.field).offset().top - 50 - $(
-														"#msg_index_"
-																+ opts.index)
-														.height()) + "px");
-						break;
-					case 'right':
-						console.log($("#msg_index_" + opts.index));
-						$("#msg_index_" + opts.index)
-								.attr(
-										"style",
-										"position:absolute;filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity: 0; opacity: 0;top:"
-												+ ($(opts.field).offset().top
-														- $(
-																"#msg_index_"
-																		+ opts.index)
-																.height() / 2 + $(
-														opts.field).height() / 2)
-												+ "px;left:"
-												+ ($(opts.field).offset().left + 50 + $(
-														opts.field).width())
-												+ "px");
-						break;
-					case 'bottom':
-						$("#msg_index_" + opts.index)
-								.attr(
-										"style",
-										"position:absolute;filter:alpha(opacity=0); -moz-opacity:0; -khtml-opacity: 0; opacity: 0;left:"
-												+ $(opts.field).offset().left
-												+ "px;top:"
-												+ ($(opts.field).offset().top + 50 + $(
-														opts.field).height())
-												+ "px");
-						break;
-
-					}
-
+					setMsgPostion(opts.align);
 				} else {
-					$("#msg_index_" + opts.index + " .tip-inner")
-							.html(opts.msg);
+					$("#msg_index_" + opts.index + " .tip-inner").html(opts.msg);
 				}
 
-				switch (opts.align) {
-				case 'left':
-					$("#msg_index_" + opts.index).animate(
-							{
-								left : ($(opts.field).offset().left - $(
-										"#msg_index_" + opts.index).width()+20)
-										+ "px",
-								opacity : '1'
-							});
-					break;
-
-				case 'top':
-					$("#msg_index_" + opts.index).animate(
-							{
-								top : ($(opts.field).offset().top - $(
-										"#msg_index_" + opts.index).height()+20)
-										+ "px",
-								opacity : '1'
-							});
-					break;
-				case 'right':
-					$("#msg_index_" + opts.index).animate(
-							{
-								left : ($(opts.field).offset().left + $(
-										opts.field).width()+20)
-										+ "px",
-								opacity : '1'
-							});
-					break;
-				case 'bottom':
-					$("#msg_index_" + opts.index).animate(
-							{
-								top : ($(opts.field).offset().top + $(
-										opts.field).height()+20)
-										+ "px",
-								opacity : '1'
-							});
-					break;
-				}
-
+				show(opts.align);
 				result = false;
-
 			} else {
-
 				$("#msg_index_" + opts.index).animate({
 					top : $(opts.field).offset().top + "px",
 					opacity : '0'
@@ -551,7 +483,7 @@
 		 * @returns {String}
 		 */
 		getMsgDiv : function(opts) {
-			var theme = "darkgrey";
+			var theme = "darkblue";
 			function getByAlign(align){
 				return  "<div class=\" easyValidation transparent "
 						+theme
@@ -570,8 +502,6 @@
 			}
 			return getByAlign(opts.align);
 		}
-		
-
 	};
 
 	/**
@@ -647,6 +577,17 @@
 					method.validate($(field), types, options1);
 
 				});
+			}
+		});
+
+		//点击msg，msg消失并使相应表单获取焦点
+		$(".easyValidation").live("click",function() {
+			method.hide(this);
+			var index = $(this).attr("id").replace("msg_index_","");
+			if (/^\d+$/.test(index)){
+				$("form :input:eq(" + index + ")").focus();
+			}else {
+				$("form :input[name='" + index + "']").focus();
 			}
 		});
 	};
