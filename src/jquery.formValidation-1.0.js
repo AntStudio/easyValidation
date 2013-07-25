@@ -339,7 +339,7 @@
 					$(this).remove();
 				});
 			} else {
-				$(".formvalidation_msg_tip").fadeOut(1000, function() {
+				$(".easyValidation").fadeOut(1000, function() {
 					$(this).remove();
 				});
 			}

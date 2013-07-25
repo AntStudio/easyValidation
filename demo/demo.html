@@ -15,6 +15,10 @@
 	function callback(){
 		$(".message").show(1000);
 	}
+
+	function hide(){
+		$("form").validate("hide");
+	}
   </script>
 
   <style>
@@ -132,7 +136,7 @@
   </fieldset>
   <div class="btns">
 	<input type='submit' class="btn btn-primary" value="Submit"/>
-	<input type='button' class="btn btn-primary" value="Cancel"/>
+	<input type='button' class="btn btn-primary" onclick="hide()" value="Cancel"/>
   </div>
   <form>
  </body>

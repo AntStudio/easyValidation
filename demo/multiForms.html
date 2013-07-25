@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>easyValidation Demo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript" src="../src/jquery-1.7.1.js"> </script>
+  <link rel="stylesheet" href="../src/css/darkgrey/tooltip.css" type="text/css">
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
+  <script type="text/javascript" src="../src/jquery.formValidation-1.0.js"> </script>
+  <script>
+	$(document).ready(function(){ 
+		$("form").validate({errorMsg:{'required':'该项为必填项<br/>'}});
+	});
+
+	function callback(){
+		$(".message").show(1000);
+	}
+  </script>
+
+  <style>
+
+  .title{
+		text-align:center;
+	}
+
+	.title span{
+		text-align:center;
+	}
+	.field{
+		margin-top:20px;
+	}
+
+	form{
+		border:1px solid #A5C1DB;
+		padding:10px;
+		width:60%;
+		margin:0 auto;
+	}
+  </style>
+ </head>
+ <body>
+   <h3 class="title">
+	<img src="logo.png">
+	 <span>Multi Forms</span>
+  </h3>
+   <form action="">
+   <div class="field">
+		<span>姓名</span>
+		<input type='text' name="name" validate="validate[required]" placeholder="必填"/>
+   </div>
+    <div  class="field">
+		<span>邮箱</span>
+		<input type='text' name="name" validate="validate[email]" />
+   </div>
+  </form>
+
+   <form action="">
+	  <div class="field">
+		<span>姓名</span>
+		<input type='text' name="name" validate="validate[required]" placeholder="必填"/>
+	 </div>
+     <div  class="field">
+		<span>邮箱</span>
+		<input type='text' name="name" validate="validate[email]" />
+     </div>
+  </form>
+ </body>
+</html>
