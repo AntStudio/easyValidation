@@ -23,6 +23,7 @@
 			var typePrefix = /(.*)\((.*)\)/.exec(type);
 			var msg = "";// 错误提示信息,如无错误则为空字符串
 			var msgType;// 校验提示信息名字
+			
 			type = typePrefix ? typePrefix[1] : type;// 得到验证类型
 			var params = typePrefix ? typePrefix[2].split(',') : "";// 验证类型所在的参数
 			opts.params = params;
@@ -308,7 +309,6 @@
 		 *            验证类型字符串,可能包括多个类型如：number,email...
 		 */
 		validate : function(field, types, options1) {
-
 			var msg = "";
 			var callback = "";
 			var result = true;
@@ -319,15 +319,16 @@
 					callback = callback ? callback : "";
 				}				 
 				var dfd = $.Deferred()
-				if(method.validateField($(field), value, options1)&&jQuery.isFunction(method.validateField($(field), value, options1).promise)){
-					method.validateField($(field), value, options1).done(function(data){
+				var doValidate=method.validateField($(field), value, options1);
+				if(doValidate&&jQuery.isFunction(doValidate.promise)){
+				doValidate.done(function(data){
 						msg+=data;
 						dfd.resolve(data);
 
 					});
 				}else{
-					msg+=method.validateField($(field), value, options1);
-					dfd.resolve(method.validateField($(field), value, options1));
+					msg+=doValidate;
+					dfd.resolve(doValidate);
 				}
 				
 				dfds1.push(dfd.promise());
@@ -428,7 +429,7 @@
 		 * @returns {Array}
 		 */
 		getTypes : function(typeString) {
-			var regexString = /[\w\d]+(\([\w\d_,]*\))?/g;
+			var regexString = /[\w\d]+(\([\w\d_#\.,]*\))?/g;
 			return typeString.match(regexString);
 		},
 		/**
@@ -645,7 +646,6 @@
 				});
 			} else {
 				$(field).bind('blur', function() {
-
 					method.validate($(field), types, options1);
 
 				});
@@ -656,7 +656,6 @@
 
 		$form.bind("submit", function(e) {// 表单提交事件绑定
 			$.each(fields,function(index,data){
-				console.log(data);
 				$resultDfds.push(method.validate(data.field, data.types, data.options1));
 			});
 			 method.when($resultDfds).done(function(){
