@@ -38,6 +38,10 @@
 	function hide(){
 		$("form").validate("hide");
 	}
+
+	function submitFun(){
+		return false;
+	}
   </script>
 
   <style>
@@ -85,7 +89,7 @@
   </style>
  </head>
  <body>
-  <form action="" class="demoForm" onsubmit="return false;">
+  <form action="" class="demoForm" onsubmit="return submitFun()">
   <h3 class="title">
 	<img src="logo.png">
   </h3>
@@ -114,9 +118,9 @@
   <fieldset>
     <legend>Compare</legend>
     <span>Field one:</span>
-	<input type="text" validate="validate[required]" placeholder="compare"/>
+	<input type="text" validate="validate[required]" id="number" placeholder="compare"/>
 	<span>Field two(should gt one):</span>
-	<input type='text' validate="validate[required,gt(#date)]" placeholder="compare" />
+	<input type='text' validate="validate[required,gt(#number)]" placeholder="compare" />
   </fieldset>
   <fieldset>
     <legend>Size limit</legend>

@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+  <title>easyValidation Demo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <script type="text/javascript" src="../src/jquery-1.7.1.js"> </script>
+  <link rel="stylesheet" href="../src/css/darkgrey/tooltip.css" type="text/css">
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.css" type="text/css">
+  <script type="text/javascript" src="../src/jquery.formValidation-1.0.js"> </script>
+  <script>
+	$(document).ready(function(){ 
+		$("form").validate({errorMsg:{'required':'这个可以填,真的可以填...<br/>'}});
+	});
+
+	function call1(){
+		var result = false;
+
+		setTimeout(function(){
+			result = true;
+		},2000);
+		
+		return result+"</br>";
+	}
+
+	function call(){
+		var dfd = $.Deferred();
+		setTimeout(function(){
+			result = true;
+			dfd.resolve("延时信息提示,可用于ajax异步验证</br>");
+		},2000);
+		return dfd.promise();
+	}
+
+	function callback(){
+		$(".message").show(1000);
+	}
+
+	function hide(){
+		$("form").validate("hide");
+	}
+
+	function submitFun(){
+		return true;
+	}
+  </script>
+
+  <style>
+
+	.title{
+		text-align:center;
+	}
+
+	.title span{
+		text-align:center;
+	}
+
+	legend {
+		border-bottom:0;
+		width:auto;
+	}
+
+	fieldset{
+		border: 1px solid #ccc;
+		padding-left:10px;
+		padding-bottom:10px;
+		min-width:850px;
+	}	
+
+	.demoForm{
+		width:60%;
+		margin:0 auto;
+	}
+
+	.demoForm input{
+		margin:0;
+	}
+
+	.demoForm fieldset span{
+		color: #555;
+		width: 190px;
+		display: inline-block;
+		text-align: right;
+	}
+
+	.btns{
+		padding-top:20px;
+		text-align:center;
+	}
+  </style>
+ </head>
+ <body>
+  <form action="" class="demoForm" onsubmit="return submitFun()">
+  <h3 class="title">
+	<img src="logo.png">
+  </h3>
+  <fieldset>
+    <legend>Required Validation</legend>
+    <span>必填:</span>
+	<input type='text' id="number" validate="validate[required]" placeholder="必填"/>
+  </fieldset>
+  <div class="btns">
+	<input type='submit' class="btn btn-primary" value="Submit"/>
+	<input type='button' class="btn btn-primary" onclick="hide()" value="Cancel"/>
+  </div>
+  <form>
+ </body>
+</html>

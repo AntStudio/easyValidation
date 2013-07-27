@@ -535,16 +535,18 @@
 			return getByAlign(opts.align);
 		},
 		when: function (dfds) {
-	            var args = dfds,
+	             var args = dfds,
 	             i = 0,
 	             length = args.length,
 	             count = length,
 	             deferred = length <= 1 && dfds[0] && jQuery.isFunction(dfds[0].promise) ?
 	                 dfds[0] :
 	                 jQuery.Deferred();
+				 var result = false; 
 	              // 构造成功（resolve）回调函数
 	             function resolveFunc(i) {
 	                 return function (value) {
+						result=result&&value;
 	                     // 如果传入的参数大于一个，则将传入的参数转换为真正的数组 sliceDeferred=[].slice
 	                     //args[i] = arguments.length > 1 ? sliceDeferred.call(arguments, 0) : value;
 	                     //直到count为0的时候
@@ -553,7 +555,7 @@
 	                         // Values changed onto the arguments object sometimes end up as undefined values
 	                         // outside the $.when method. Cloning the object into a fresh array solves the issue
 	                         //resolve deferred 响应这个deferred对象，上面这句话好像是解决一个奇怪的bug
-	                         deferred.resolveWith(deferred, args[i]);
+	                         deferred.resolve(result);
 	                     }
 	                 };
 	             }
@@ -569,10 +571,11 @@
 	                     }
 	                 }
 	                 if (!count) {
-	                     deferred.resolveWith(deferred, args);
+	                     deferred.resolve(result);
 	                 }
 	             } else if (deferred !== dfds[0]) {  //如果只传了一个参数，而这个参数又不是deferred对象，则立即resolve
-	                 deferred.resolveWith(deferred, length ? [dfds[0]] : []);
+					
+	                 deferred.resolve(length ? [dfds[0]] : []);
 	             }
 	             return deferred.promise();  //返回deferred只读视图
 	         }
@@ -617,7 +620,7 @@
 			return;
 		}
 		var $form = $(this);
-		var $resultDfds = new Array();
+		
 		var fields = new Array();
 		$form.find("[validate]").each(function(index, value) {
 			var options1 = $.extend({}, $.fn.defaults, options);
@@ -653,16 +656,26 @@
 
 			fields.push({"field":$(field),"types":types,"options1":options1});
 		});
+        var result = false;
+		$form.find(":input").keyup(function(){
+			result = false;
+		});
 
 		$form.bind("submit", function(e) {// 表单提交事件绑定
-			$.each(fields,function(index,data){
-				$resultDfds.push(method.validate(data.field, data.types, data.options1));
-			});
-			 method.when($resultDfds).done(function(){
-				 $form.unbind("submit");
-				 $form.submit();
-			 });
-		 	return false;
+			var $resultDfds = new Array();
+			if(!result){//如果之前验证通过就不用再次验证了
+				$.each(fields,function(index,data){
+					$resultDfds.push(method.validate(data.field, data.types, data.options1));
+				});
+				 method.when($resultDfds).done(function(data){
+					 result = data;
+					 console.log(data);
+					 if(result){
+						$form.submit();
+					 }
+				 });
+			}
+		 	return result;
 		});
 		//点击msg，msg消失并使相应表单获取焦点
 		$(".easyValidation").live("click",function() {
