@@ -168,11 +168,29 @@
 			 * 调用用户自定义方法验证 返回错误信息
 			 */
 			case 'call':
-
+				var gdfd = $.Deferred();
+				var dfds = new Array();
+				var callMsg="";
 				$.each(params, function(index, param) {
-
-					msg += window[param](field, type, opts);
+					var dfd = $.Deferred();
+					if(window[param](field, type, opts) && jQuery.isFunction(window[param](field, type, opts).promise)){
+						
+						window[param](field, type, opts).done(function(data){
+							callMsg+=data;
+							
+							dfd.resolve(data);
+						});
+						
+					}else{
+						callMsg += window[param](field, type, opts);
+					    dfd.resolve(msg);
+					}
+					dfds.push(dfd);
 				});
+				method.when(dfds).done(function(){
+					gdfd.resolve(callMsg);	
+				});
+				msg=gdfd.promise();
 				break;
 			/**
 			 * 复选框 选择判断
@@ -294,27 +312,40 @@
 			var msg = "";
 			var callback = "";
 			var result = true;
+			var dfds1 = new Array();
 			$.each(types, function(index, value) {
 				if (method.checkRegex(value, /^callback\(\w+\)$/)) {
-
 					callback = value.match(/^callback\((.*)\)$/);
 					callback = callback ? callback : "";
+				}				 
+				var dfd = $.Deferred()
+				if(method.validateField($(field), value, options1)&&jQuery.isFunction(method.validateField($(field), value, options1).promise)){
+					method.validateField($(field), value, options1).done(function(data){
+						msg+=data;
+						dfd.resolve(data);
 
+					});
+				}else{
+					msg+=method.validateField($(field), value, options1);
+					dfd.resolve(method.validateField($(field), value, options1));
 				}
-
-				msg += method.validateField($(field), value, options1);
-
+				
+				dfds1.push(dfd.promise());
+				
 			});
-
-			options1.align = 'right';
-			options1.msg = msg;
-			options1.field = field;
-			result = method.showOrHideMsg(options1);
-			if (typeof (callback[1]) != 'undefined') {
-				window[callback[1]](result);
-			} else {
-				return result;
-			}
+			var gdfd = $.Deferred();
+			method.when(dfds1).done(function(){
+				options1.align = 'right';
+				options1.msg = msg;
+				options1.field = field;
+				result = method.showOrHideMsg(options1);
+				if (typeof (callback[1]) != 'undefined') {
+					gdfd.resolve(window[callback[1]](result));
+				} else {
+					gdfd.resolve(result);
+				}
+			});
+			return gdfd.promise();
 		},
 		/**
 		 * 正则匹配
@@ -501,7 +532,49 @@
 					    +"</div></div>";
 			}
 			return getByAlign(opts.align);
-		}
+		},
+		when: function (dfds) {
+	            var args = dfds,
+	             i = 0,
+	             length = args.length,
+	             count = length,
+	             deferred = length <= 1 && dfds[0] && jQuery.isFunction(dfds[0].promise) ?
+	                 dfds[0] :
+	                 jQuery.Deferred();
+	              // 构造成功（resolve）回调函数
+	             function resolveFunc(i) {
+	                 return function (value) {
+	                     // 如果传入的参数大于一个，则将传入的参数转换为真正的数组 sliceDeferred=[].slice
+	                     //args[i] = arguments.length > 1 ? sliceDeferred.call(arguments, 0) : value;
+	                     //直到count为0的时候
+	                     if (!(--count)) {
+	                         // Strange bug in FF4:
+	                         // Values changed onto the arguments object sometimes end up as undefined values
+	                         // outside the $.when method. Cloning the object into a fresh array solves the issue
+	                         //resolve deferred 响应这个deferred对象，上面这句话好像是解决一个奇怪的bug
+	                         deferred.resolveWith(deferred, args[i]);
+	                     }
+	                 };
+	             }
+	             if (length > 1) {
+	                 for (; i < length; i++) {
+	                     //存在agrs[i]并且是args[i]是deferred对象，那这样的话作者怎么不直接jQuery.isFunction(args[i].promise)，感觉多判断了，作者也蒙了吧
+	                     if (args[i] && jQuery.isFunction(args[i].promise)) {
+	                         //执行一次resolveFunc(i)count就减少一个
+	                         args[i].promise().then(resolveFunc(i), deferred.reject);
+	                     } else {
+	                       // 计数器，表示发现不是Deferred对象，而是普通JavaScript象 ,反正最后只要count==0才能resovle deferred
+	                         --count;
+	                     }
+	                 }
+	                 if (!count) {
+	                     deferred.resolveWith(deferred, args);
+	                 }
+	             } else if (deferred !== dfds[0]) {  //如果只传了一个参数，而这个参数又不是deferred对象，则立即resolve
+	                 deferred.resolveWith(deferred, length ? [dfds[0]] : []);
+	             }
+	             return deferred.promise();  //返回deferred只读视图
+	         }
 	};
 
 	/**
@@ -543,6 +616,8 @@
 			return;
 		}
 		var $form = $(this);
+		var $resultDfds = new Array();
+		var fields = new Array();
 		$form.find("[validate]").each(function(index, value) {
 			var options1 = $.extend({}, $.fn.defaults, options);
 			options1.index = index;
@@ -560,9 +635,6 @@
 				options1.index = $(field).attr('name');
 			}
 
-			$($form).bind("submit", function() {// 表单提交事件绑定
-				return method.validate($(field), types, options1);
-			});
 			/**
 			 * 各个表单项的blur或click事件绑定
 			 */
@@ -578,8 +650,21 @@
 
 				});
 			}
+
+			fields.push({"field":$(field),"types":types,"options1":options1});
 		});
 
+		$form.bind("submit", function(e) {// 表单提交事件绑定
+			$.each(fields,function(index,data){
+				console.log(data);
+				$resultDfds.push(method.validate(data.field, data.types, data.options1));
+			});
+			 method.when($resultDfds).done(function(){
+				 $form.unbind("submit");
+				 $form.submit();
+			 });
+		 	return false;
+		});
 		//点击msg，msg消失并使相应表单获取焦点
 		$(".easyValidation").live("click",function() {
 			method.hide(this);

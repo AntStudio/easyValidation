@@ -12,6 +12,25 @@
 		$("form").validate({errorMsg:{'required':'这个可以填,真的可以填...<br/>'}});
 	});
 
+	function call1(){
+		var result = false;
+
+		setTimeout(function(){
+			result = true;
+		},2000);
+		
+		return result+"</br>";
+	}
+
+	function call(){
+		var dfd = $.Deferred();
+		setTimeout(function(){
+			result = true;
+			dfd.resolve("延时信息提示,可用于ajax异步验证</br>");
+		},2000);
+		return dfd.promise();
+	}
+
 	function callback(){
 		$(".message").show(1000);
 	}
@@ -66,7 +85,7 @@
   </style>
  </head>
  <body>
-  <form action="" class="demoForm">
+  <form action="" class="demoForm" onsubmit="return false;">
   <h3 class="title">
 	<img src="logo.png">
   </h3>
@@ -133,6 +152,11 @@
     <span>回调函数:</span>
 	<input type="text" validate="validate[callback(callback)]" placeholder="回调"/>
 	<b class="alert alert-info message hide">回调函数执行...</b>
+  </fieldset>
+    <fieldset>
+    <legend>Deferred</legend>
+    <span>延时验证(可用于ajax验证):</span>
+	<input type="text" validate="validate[call(call)]" placeholder="Deferred(延时)"/>
   </fieldset>
   <div class="btns">
 	<input type='submit' class="btn btn-primary" value="Submit"/>
