@@ -34,7 +34,7 @@
 			case 'required':
 				msgType = typeof (params[0]) != 'undefined' ? params[0] : type;
 				if (opts.type == 'text' || opts.type == 'password')
-					msg = method.getErrorMsg((val.length == 0), msgType, opts);
+					msg=method.getErrorMsg((val.length == 0), msgType, opts);
 				else if (opts.type == 'radio') {// radio必填处理
 					msg = method.getErrorMsg(!method.validateRadio(field, type,
 							opts), msgType, opts);
@@ -212,6 +212,10 @@
 				break;
 			default:
 				msg = "";
+			}
+
+			if(msg&& $(field).attr("errMsg")){
+				msg =  $(field).attr("errMsg")+"</br>";
 			}
 			return msg;
 		},

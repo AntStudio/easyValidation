@@ -157,10 +157,15 @@
 	<input type="text" validate="validate[callback(callback)]" placeholder="回调"/>
 	<b class="alert alert-info message hide">回调函数执行...</b>
   </fieldset>
-    <fieldset>
+  <fieldset>
     <legend>Deferred</legend>
     <span>延时验证(可用于ajax验证):</span>
 	<input type="text" validate="validate[call(call)]" placeholder="Deferred(延时)"/>
+  </fieldset>
+  <fieldset>
+    <legend>自定义提示信息</legend>
+    <span>errMsg自定义提示信息:</span>
+	<input type="text" validate="validate[required]" placeholder="回调" errMsg="这是自定义信息"/>
   </fieldset>
   <div class="btns">
 	<input type='submit' class="btn btn-primary" value="Submit"/>
