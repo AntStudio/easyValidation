@@ -92,7 +92,7 @@
 			case 'email':
 				msgType = typeof (params[0]) != 'undefined' ? params[0] : type;
 				msg = method.getErrorMsg(!method
-						.checkRegex(val, /^\w+@\w+.\w+/), msgType, opts);
+						.checkRegex(val, /^\w+@\w+(\.[a-zA-Z]+){1,2}$/), msgType, opts);
 
 				break;
 			case 'eq':
@@ -487,15 +487,17 @@
 			}
 
 			if (opts.msg.replace(/<br\/>/g, "") != '') {
-				if ($("#msg_index_" + opts.index).length == 0) {// 未创建提示信息
+				var timeout = ($("#msg_index_" + opts.index).length==0)?0:1000;
+				if ($("#msg_index_" + opts.index).length == 0||($("#msg_index_" + opts.index).css("opacity")<1&&$("#msg_index_" + opts.index).css("opacity")>0)) {// 未创建提示信息
 					opts.msg = opts.msg.substring(0, opts.msg.length - 5);//取消</br>
 					$('body').append(method.getMsgDiv(opts));
 					setMsgPostion(opts.align);
 				} else {
 					$("#msg_index_" + opts.index + " .tip-inner").html(opts.msg);
 				}
-
-				show(opts.align);
+				setTimeout(function(){
+					show(opts.align);
+				},timeout);
 				result = false;
 			} else {
 				$("#msg_index_" + opts.index).animate({
@@ -649,6 +651,7 @@
 				});
 			} else {
 				$(field).bind('blur', function() {
+					console.log($(field).val());
 					method.validate($(field), types, options1);
 
 				});
