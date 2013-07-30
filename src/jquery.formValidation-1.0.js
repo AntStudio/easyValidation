@@ -444,8 +444,7 @@
 			/**
 			**设置msg初始位置
 			**/
-			function setMsgPostion(align){
-				var $msgDiv = $("#msg_index_"+ opts.index);
+			function setMsgPostion($msgDiv,align){
 				var top,left;
 				switch(align){
 					case "left" : top=$(opts.field).offset().top-$msgDiv.height() / 2 + $(opts.field).height() / 2;
@@ -490,8 +489,9 @@
 				var timeout = ($("#msg_index_" + opts.index).length==0)?0:1000;
 				if ($("#msg_index_" + opts.index).length == 0||($("#msg_index_" + opts.index).css("opacity")<1&&$("#msg_index_" + opts.index).css("opacity")>0)) {// 未创建提示信息
 					opts.msg = opts.msg.substring(0, opts.msg.length - 5);//取消</br>
-					$('body').append(method.getMsgDiv(opts));
-					setMsgPostion(opts.align);
+					var $msgDiv = $(method.getMsgDiv(opts));
+					$('body').append($msgDiv);
+					setMsgPostion($msgDiv,opts.align);
 				} else {
 					$("#msg_index_" + opts.index + " .tip-inner").html(opts.msg);
 				}
@@ -651,7 +651,6 @@
 				});
 			} else {
 				$(field).bind('blur', function() {
-					console.log($(field).val());
 					method.validate($(field), types, options1);
 
 				});
@@ -672,7 +671,6 @@
 				});
 				 method.when($resultDfds).done(function(data){
 					 result = data;
-					 console.log(data);
 					 if(result){
 						$form.submit();
 					 }
