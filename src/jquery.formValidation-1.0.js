@@ -66,9 +66,8 @@
 			case 'precision':
 				var bit = (params[0] || params[0] != '') ? params[0] : 2;// 默认两位小数
 
-				var regex = new RegExp("^[-,+]?(([1-9]\\d*)|0).\\d{" + bit
-						+ ",}")
-
+				var regex = new RegExp("^[-,+]?(([1-9]\\d*)|0)\\.\\d{2,}$");
+			 
 				if (!method.checkRegex(val, regex)) {
 					msgType = typeof (params[2]) != 'undefined' ? params[0]
 							: type;
@@ -704,13 +703,14 @@
 		var s;
 		var s1 = this + "";
 		var start = s1.indexOf(".");
-		start = start + parseInt(len) + 1;
-		if (s1.substr(start, 1) >= 5)
+		if(start!=-1){
+			start = start + parseInt(len) + 1;
+		}
+		if (start!=-1&&s1.substr(start, 1) >= 5)
 			add = 1;
 		var temp = Math.pow(10, len);
 		s = Math.floor(this * temp) + add;
-
-		return s / temp;
+		return (s / temp).toFixed(len);
 	};
 
 	/**

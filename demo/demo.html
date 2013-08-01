@@ -136,8 +136,10 @@
   </fieldset>
   <fieldset>
     <legend>Precision</legend>
-    <span>Precision:</span>
-	<input type="text" validate="validate[precision(2)]" placeholder="两位小数"/>
+    <span>round:</span>
+	<input type="text" validate="validate[precision(2,true)]" placeholder="两位小数"/>
+	<span>hold:</span>
+	<input type="text" validate="validate[precision(2,false)]" placeholder="两位小数"/>
   </fieldset>
   <fieldset>
     <legend>Checkbox</legend>
