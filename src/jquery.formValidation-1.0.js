@@ -627,39 +627,43 @@
 		var $form = $(this);
 		
 		var fields = new Array();
-		$form.find("[validate]").each(function(index, value) {
-			var options1 = $.extend({}, $.fn.defaults, options);
-			options1.index = index;
-			options1.errorMsg = $.extend({}, $.fn.errorMsg, options.errorMsg);
-			var opts = $(value).attr("validate");
-			var field = $(this);
-			opts = /validate\[(.*)\]/.exec(opts);
+		function getFields(){
+			fields = new Array();
+			$form.find("[validate]").each(function(index, value) {
+				var options1 = $.extend({}, $.fn.defaults, options);
+				options1.index = index;
+				options1.errorMsg = $.extend({}, $.fn.errorMsg, options.errorMsg);
+				var opts = $(value).attr("validate");
+				var field = $(this);
+				opts = /validate\[(.*)\]/.exec(opts);
 
-			if (!opts)
-				return false;
+				if (!opts)
+					return false;
 
-			var types = method.getTypes(opts[1]);
-			options1.type = $(field).attr("type");
-			if (options1.type == 'radio' || options1.type == 'checkbox') {
-				options1.index = $(field).attr('name');
-			}
-
+				var types = method.getTypes(opts[1]);
+				options1.type = $(field).attr("type");
+				if (options1.type == 'radio' || options1.type == 'checkbox') {
+					options1.index = $(field).attr('name');
+				}
+				fields.push({"field":$(field),"types":types,"options1":options1});
+			});
+		}
+		getFields();
+		$.each(fields,function(index,e){
 			/**
 			 * 各个表单项的blur或click事件绑定
 			 */
-			if (options1.type == 'radio' || options1.type == 'checkbox') {
-				$(field).bind('click', function() {
-					method.validate($(field), types, options1);
+			if (e.options1.type == 'radio' || e.options1.type == 'checkbox') {
+				$(e.field).bind('click', function() {
+					method.validate($(e.field), e.types, e.options1);
 
 				});
 			} else {
-				$(field).bind('blur', function() {
-					method.validate($(field), types, options1);
+				$(e.field).bind('blur', function() {
+					method.validate($(e.field), e.types, e.options1);
 
 				});
 			}
-
-			fields.push({"field":$(field),"types":types,"options1":options1});
 		});
         var result = false;
 		$form.find(":input").keyup(function(){
@@ -667,6 +671,7 @@
 		});
 
 		$form.bind("submit", function(e) {// 表单提交事件绑定
+			getFields();
 			var $resultDfds = new Array();
 			if(!result){//如果之前验证通过就不用再次验证了
 				$.each(fields,function(index,data){

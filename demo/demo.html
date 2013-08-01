@@ -169,6 +169,18 @@
     <span>errMsg自定义提示信息:</span>
 	<input type="text" validate="validate[required]" placeholder="回调" errMsg="这是自定义信息"/>
   </fieldset>
+   <fieldset>
+    <legend>可删除表单项</legend>
+    <span>可删除表单项:</span>
+	<input type="text" validate="validate[required,number]" placeholder="可删除" errMsg="请输入数字"/>
+	<input type="button" value="Delete" onclick="javascript:$(this).prev().remove();"/>
+  </fieldset>
+   <fieldset>
+    <legend>可增加表单项</legend>
+    <span>可增加表单项:</span>
+	<input type="text" validate="validate[required,number]" placeholder="新增" style="display:none" errMsg="请输入数字"/>
+	<input type="button" value="Delete" onclick="javascript:$(this).prev().show();"/>
+  </fieldset>
   <div class="btns">
 	<input type='submit' class="btn btn-primary" value="Submit"/>
 	<input type='button' class="btn btn-primary" onclick="hide()" value="Cancel"/>
