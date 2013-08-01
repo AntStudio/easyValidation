@@ -629,7 +629,7 @@
 		var fields = new Array();
 		function getFields(){
 			fields = new Array();
-			$form.find("[validate]").each(function(index, value) {
+			$form.find("[validate]:not(:hidden)").each(function(index, value) {
 				var options1 = $.extend({}, $.fn.defaults, options);
 				options1.index = index;
 				options1.errorMsg = $.extend({}, $.fn.errorMsg, options.errorMsg);
