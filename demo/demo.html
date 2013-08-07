@@ -9,7 +9,7 @@
   <script type="text/javascript" src="../src/jquery.formValidation-1.0.js"> </script>
   <script>
 	$(document).ready(function(){ 
-		$("form").validate({errorMsg:{'required':'这个可以填,真的可以填...<br/>'}});
+		$("form").validate({align:'right',errorMsg:{'required':'这个可以填,真的可以填...<br/>'}});
 	});
 
 	function call1(){
@@ -101,19 +101,19 @@
   <fieldset>
     <legend>Number Validation</legend>
     <span>Number(Required):</span>
-	<input type='text' id="number" validate="validate[required,number]" placeholder="Number"/>
+	<input type='text' id="number" validate="validate[required,number]" placeholder="Number" msgAlign="left"/>
   </fieldset>
   <fieldset>
     <legend>Email Validation</legend>
     <span>Email:</span>
-	<input type='text' id="email" validate="validate[email]" placeholder="Email"/>
+	<input type='text' id="email" validate="validate[email]" placeholder="Email" msgAlign="bottom"/>
   </fieldset>
   <fieldset>
     <legend>Password Validation</legend>
     <span>new password:</span>
 	<input type='password' id="password" validate="validate[required]" placeholder="password"/>
 	<span>repeat password:</span>
-	<input type='password' validate="validate[required,eq(#password)]" placeholder="repeat password"/>
+	<input type='password' validate="validate[required,eq(#password)]" placeholder="repeat password" msgAlign="top"/>
   </fieldset>
   <fieldset>
     <legend>Compare</legend>
