@@ -521,7 +521,7 @@
 		 * @returns {String}
 		 */
 		getMsgDiv : function(opts) {
-			var theme = "darkblue";
+			var theme = $.fn.defaults.theme;
 			function getByAlign(align){
 				return  "<div class=\" easyValidation transparent "
 						+theme
@@ -592,7 +592,7 @@
 	 * 默认值
 	 */
 	$.fn.defaults = {
-		css : 'darkgray',
+		theme : 'darkgray',
 		align : 'top',
 		errorMsg : {
 			'required' : '*该输入项为必填项',
@@ -625,6 +625,7 @@
 		}
 		var $form = $(this);
 		$.fn.defaults.align =options.align|| $.fn.defaults.align;
+		$.fn.defaults.theme =options.theme|| $.fn.defaults.theme;
 		var fields = new Array();
 		function getFields(){
 			fields = new Array();
