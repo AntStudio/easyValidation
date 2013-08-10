@@ -12,6 +12,9 @@
 		$("form").validate({theme:'darkgrey',align:'right',errorMsg:{'required':'这个可以填,真的可以填...<br/>'}});
 	});
 
+    function getResult(){
+		alert($("form").validate("getResult"));
+	}
 	function call1(){
 		var result = false;
 
@@ -180,6 +183,11 @@
     <span>可增加表单项:</span>
 	<input type="text" validate="validate[required,number]" placeholder="新增" style="display:none" errMsg="请输入数字"/>
 	<input type="button" value="Add" onclick="javascript:$(this).prev().show();"/>
+  </fieldset>
+  <fieldset>
+    <legend>获取验证结果</legend>
+    <span>获取验证结果:</span>
+	<input type="button" value="GetResult" onclick="getResult();"/>
   </fieldset>
   <div class="btns">
 	<input type='submit' class="btn btn-primary" value="Submit"/>

@@ -12,6 +12,12 @@
 		$("form").validate({errorMsg:{'required':'这个可以填,真的可以填...<br/>'}});
 	});
 
+	function validate(){
+		$("form").validate("validate");
+	}
+	function getResult(){
+		alert($("form").validate("getResult"));
+	}
 	function call1(){
 		var result = false;
 
@@ -98,8 +104,14 @@
     <span>必填:</span>
 	<input type='text' id="number" validate="validate[required]" placeholder="必填"/>
   </fieldset>
+   <fieldset>
+    <legend>获取验证结果</legend>
+    <span>获取验证结果:</span>
+	<input type="button" value="GetResult" onclick="getResult();"/>
+  </fieldset>
   <div class="btns">
 	<input type='submit' class="btn btn-primary" value="Submit"/>
+	<input type='button' class="btn btn-primary" value="validate" onclick="validate()"/>
 	<input type='button' class="btn btn-primary" onclick="hide()" value="Cancel"/>
   </div>
   <form>
